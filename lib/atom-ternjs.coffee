@@ -81,6 +81,12 @@ module.exports =
       type: 'boolean'
       default: true
       order: 11
+    useternapi:
+      title: 'Use Tern Programming Interface'
+      description: 'Whether to use Tern Programming Interface.'
+      type: 'boolean'
+      default: false
+      order: 12
 
   activate: (state) ->
     @provider = new Provider()
