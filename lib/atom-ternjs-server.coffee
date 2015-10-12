@@ -1,13 +1,19 @@
+{allowUnsafeEval, allowUnsafeNewFunction} = require 'loophole'
+
 module.exports =
 class Server
 
   process: null
   rootPath: null
+  ternProgrammingInterface:null
 
   constructor: (rootPath) ->
     @rootPath = rootPath
 
   start: (callback) ->
+    @ternProgrammingInterface = allowUnsafeEval ->
+      allowUnsafeNewFunction ->
+        new (require '../node_modules/tern/lib/tern.js').Server {}
     path = require 'path'
     command = path.resolve __dirname, '../node_modules/.bin/tern'
     args = ['--persistent', '--no-port-file', '--verbose']

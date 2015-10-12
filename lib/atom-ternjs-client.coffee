@@ -127,5 +127,11 @@ class Client
       console.log err
 
   post: (data) ->
-    $.post("http://localhost:#{@port}", data).then (data) ->
-      data
+    #$.post("http://localhost:#{@port}", data).then (data) ->
+      #data
+    deferred = $.Deferred()
+    server = @manager.getServerForProject @rootPath
+    data = JSON.parse data
+    server.ternProgrammingInterface.request data,(e,data) ->
+      deferred.resolve data
+    deferred.promise()
