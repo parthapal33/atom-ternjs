@@ -5,15 +5,12 @@ class Server
 
   process: null
   rootPath: null
-  ternProgrammingInterface:null
+  embeddedTernServer:null
 
   constructor: (rootPath) ->
     @rootPath = rootPath
 
   start: (callback) ->
-    @ternProgrammingInterface = allowUnsafeEval ->
-      allowUnsafeNewFunction ->
-        new (require '../node_modules/tern/lib/tern.js').Server {}
     path = require 'path'
     command = path.resolve __dirname, '../node_modules/.bin/tern'
     args = ['--persistent', '--no-port-file', '--verbose']
@@ -46,3 +43,12 @@ class Server
 
   isPlatformWindows: ->
     document.getElementsByTagName('body')[0].classList.toString().indexOf('platform-win') > -1
+
+  initializeEmbeddedTernServer: (manager)->
+    rootPath = @rootPath
+    @embeddedTernServer = allowUnsafeEval ->
+      allowUnsafeNewFunction ->
+        new (require '../node_modules/tern/lib/tern.js').Server {}
+
+  getEmbeddedTernServer: ->
+    @embeddedTernServer

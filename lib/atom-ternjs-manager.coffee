@@ -83,6 +83,7 @@ class Manager
     Server = require './atom-ternjs-server' if !Server
     return if @getServerForProject(dir)
     idxServer = @servers.push(new Server(dir)) - 1
+    @servers[idxServer].initializeEmbeddedTernServer this
     @servers[idxServer].start (port) =>
       client = @getClientForProject(dir)
       if !client
