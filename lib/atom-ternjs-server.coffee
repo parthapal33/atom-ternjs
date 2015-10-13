@@ -64,6 +64,7 @@ class Server
     if manager.helper.fileExists(homeDir+'/.tern-config') isnt false
       ternConfig = JSON.parse fs.readFileSync(homeDir+'/.tern-config','utf8')
     config = projectConfig || ternConfig || defaultConfig
+    config = _.extend defaultConfig,ternConfig,projectConfig
     defs = @loadDefs(manager,config)
     plugins = @loadPlugins(manager,config)
     config =
@@ -80,6 +81,9 @@ class Server
   loadDefs:(manager,config)->
     #return browser defs for now
     defs = []
+    if config.ecmaScript
+      config.libs.push('ecma6') if config.ecmaVersion >= 6 and config.libs.indexOf('ecma6') is -1
+      config.libs.push('ecma5') if config.libs.indexOf('ecma5') is -1
     config.libs.forEach (lib)->
       if manager.helper.fileExists(__dirname+'/../node_modules/tern/defs/'+lib+'.json') isnt false
         defs.push JSON.parse fs.readFileSync(__dirname+'/../node_modules/tern/defs/'+lib+'.json','utf8')
